@@ -1,6 +1,6 @@
 <?php
 
-namespace DivineOmega\DatesTimezoneConversion\Traits;
+namespace JordJD\DatesTimezoneConversion\Traits;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

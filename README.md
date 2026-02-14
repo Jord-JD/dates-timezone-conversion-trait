@@ -30,7 +30,7 @@ An example of a `User` model with the trait being used is shown below.
 
 namespace App\Models;
 
-use DivineOmega\DatesTimezoneConversion\Traits\DatesTimezoneConversion;
+use JordJD\DatesTimezoneConversion\Traits\DatesTimezoneConversion;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
