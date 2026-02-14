@@ -19,7 +19,7 @@
     }
   },
   "replace": {
-    "jord-jd/dates-timezone-conversion-trait": "self.version"
+    "divineomega/dates-timezone-conversion-trait": "self.version"
   },
   "extra": {
     "branch-alias": {
