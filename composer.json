@@ -1,21 +1,29 @@
 {
-    "name": "divineomega/dates-timezone-conversion-trait",
-    "description": "Automatically convert an Eloquent model's dates to and from the current user's timezone",
-    "type": "library",
-    "require": {
-        "illuminate/database": "^5.1",
-        "illuminate/support": "^5.1"
-    },
-    "license": "LGPL-3.0-only",
-    "authors": [
-        {
-            "name": "Jordan Hall",
-            "email": "jordan@hall05.co.uk"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "DivineOmega\\DatesTimezoneConversion\\": "src/"
-        }
+  "name": "jord-jd/dates-timezone-conversion-trait",
+  "description": "Automatically convert an Eloquent model's dates to and from the current user's timezone",
+  "type": "library",
+  "require": {
+    "illuminate/database": "^5.1",
+    "illuminate/support": "^5.1"
+  },
+  "license": "LGPL-3.0-only",
+  "authors": [
+    {
+      "name": "Jordan Hall",
+      "email": "jordan@hall05.co.uk"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DivineOmega\\DatesTimezoneConversion\\": "src/"
+    }
+  },
+  "replace": {
+    "jord-jd/dates-timezone-conversion-trait": "self.version"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0-dev"
+    }
+  }
 }

@@ -9,7 +9,7 @@ Dates Timezone Conversion Trait can be easily installed using Composer.
 Just run the following command from the root of your project.
 
 ```
-composer require divineomega/dates-timezone-conversion-trait
+composer require jord-jd/dates-timezone-conversion-trait
 ```
 
 If you have never used the Composer dependency manager before, head
