@@ -26,8 +26,10 @@ trait DatesTimezoneConversion
             /** @var Model $user */
             $user = Auth::user();
 
-            if ($user) {
-                $value->setTimezone($user->getAttributeValue('timezone'));
+            $timezone = $user ? $user->getAttributeValue('timezone') : null;
+            if (is_string($timezone) && $timezone !== '') {
+                $value = clone $value;
+                $value->setTimezone($timezone);
             }
 
         }
@@ -44,17 +46,17 @@ trait DatesTimezoneConversion
      */
     public function setAttribute($key, $value)
     {
-        if (in_array($key, $this->getDates())) {
-            $value = $this->convertToDateObject($value);
+        if ($this->isDateAttribute($key) && $value !== null && $value !== '') {
 
             /** @var Model $user */
             $user = Auth::user();
 
-            if ($user) {
-                $value = Carbon::parse($value, $user->getAttributeValue('timezone'));
-            }
+            $timezone = $user ? $user->getAttributeValue('timezone') : null;
+            $timezone = is_string($timezone) && $timezone !== '' ? $timezone : null;
+            $value = $this->convertToDateObject($value, $timezone);
 
-            $value->setTimezone(config('app.timezone'));
+            $applicationTimezone = config('app.timezone');
+            $value->setTimezone($applicationTimezone ?: date_default_timezone_get());
         }
 
         return parent::setAttribute($key, $value);
@@ -70,7 +72,7 @@ trait DatesTimezoneConversion
      */
     private function isDateObject($key, $value)
     {
-        return in_array($key, $this->getDates()) &&
+        return $this->isDateAttribute($key) &&
             is_object($value) &&
             $value instanceof Carbon;
     }
@@ -81,21 +83,50 @@ trait DatesTimezoneConversion
      * @param $value
      * @return Carbon
      */
-    private function convertToDateObject($value)
+    private function convertToDateObject($value, $timezone = null)
     {
         if (is_object($value) && $value instanceof Carbon) {
-            return $value;
+            return clone $value;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return Carbon::instance($value);
         }
 
         if (is_string($value)) {
-            return Carbon::parse($value);
+            return Carbon::parse($value, $timezone);
         }
 
         if (is_integer($value)) {
             return Carbon::createFromTimestamp($value);
         }
 
-        throw new \Exception('Unable to convert value to Carbon date object.');
+        throw new \InvalidArgumentException('Unable to convert value to Carbon date object.');
     }
 
+    /**
+     * Determine whether an attribute is an Eloquent date or datetime cast.
+     *
+     * @param string $key
+     * @return bool
+     */
+    private function isDateAttribute($key)
+    {
+        if (in_array($key, $this->getDates(), true)) {
+            return true;
+        }
+
+        if (!method_exists($this, 'getCasts')) {
+            return false;
+        }
+
+        $casts = $this->getCasts();
+        if (!isset($casts[$key])) {
+            return false;
+        }
+
+        $cast = strtolower(explode(':', $casts[$key], 2)[0]);
+
+        return in_array($cast, ['date', 'datetime', 'immutable_date', 'immutable_datetime'], true);
+    }
 }
