@@ -3,6 +3,7 @@
 namespace JordJD\DatesTimezoneConversion\Traits;
 
 use Carbon\Carbon;
+use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,7 +56,7 @@ trait DatesTimezoneConversion
             $timezone = is_string($timezone) && $timezone !== '' ? $timezone : null;
             $value = $this->convertToDateObject($value, $timezone);
 
-            $applicationTimezone = config('app.timezone');
+            $applicationTimezone = Container::getInstance()->make('config')->get('app.timezone');
             $value->setTimezone($applicationTimezone ?: date_default_timezone_get());
         }
 

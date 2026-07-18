@@ -50,7 +50,7 @@ class TestModel extends Model
 
 class TestUser extends Model
 {
-    public function __construct($timezone)
+    public function __construct($timezone = null)
     {
         parent::__construct();
         $this->setRawAttributes(['timezone' => $timezone]);
