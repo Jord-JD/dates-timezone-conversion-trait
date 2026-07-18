@@ -44,6 +44,7 @@ class TestModel extends Model
     use DatesTimezoneConversion;
 
     public $timestamps = false;
+    protected $dateFormat = 'Y-m-d H:i:s';
     protected $dates = ['event_at'];
     protected $casts = ['event_at' => 'datetime'];
 }
