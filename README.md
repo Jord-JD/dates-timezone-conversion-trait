@@ -3,6 +3,8 @@
 This package provides a trait that automatically converts an Eloquent
 model's dates to and from the current user's timezone.
 
+Supports Laravel 5.1 through 13 without raising the original PHP 5.5.9 minimum. Nullable dates pass through unchanged, modern date/datetime casts are recognised, and returned Carbon values are copied before timezone conversion so reading an attribute does not mutate Eloquent's underlying date object.
+
 ## Installation
 
 Dates Timezone Conversion Trait can be easily installed using Composer.

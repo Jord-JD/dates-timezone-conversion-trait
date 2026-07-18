@@ -1,0 +1,38 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '5.5'
+            composer: '2.2'
+            phpunit: '^4.8'
+            illuminate: '5.1.*'
+          - php: '8.5'
+            composer: latest
+            phpunit: '^12.0'
+            illuminate: '^13.0'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:${{ matrix.composer }}
+          coverage: none
+      - run: composer validate --strict
+      - run: composer require --dev --no-update "phpunit/phpunit:${{ matrix.phpunit }}"
+      - run: composer require --no-update "illuminate/database:${{ matrix.illuminate }}" "illuminate/support:${{ matrix.illuminate }}"
+      - if: matrix.php == '5.5'
+        run: composer config --no-plugins allow-plugins.kylekatarnls/update-helper false
+      - run: composer update --prefer-stable --no-interaction
+      - run: vendor/bin/phpunit tests
