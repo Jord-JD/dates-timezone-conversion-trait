@@ -16,7 +16,7 @@ jobs:
           - php: '5.5'
             composer: '2.2'
             phpunit: '^4.8'
-            illuminate: '^5.1'
+            illuminate: '5.1.*'
           - php: '8.5'
             composer: latest
             phpunit: '^12.0'
@@ -32,5 +32,7 @@ jobs:
       - run: composer validate --strict
       - run: composer require --dev --no-update "phpunit/phpunit:${{ matrix.phpunit }}"
       - run: composer require --no-update "illuminate/database:${{ matrix.illuminate }}" "illuminate/support:${{ matrix.illuminate }}"
+      - if: matrix.php == '5.5'
+        run: composer config --no-plugins allow-plugins.kylekatarnls/update-helper false
       - run: composer update --prefer-stable --no-interaction
       - run: vendor/bin/phpunit tests

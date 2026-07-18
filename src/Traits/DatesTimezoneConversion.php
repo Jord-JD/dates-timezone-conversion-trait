@@ -46,7 +46,7 @@ trait DatesTimezoneConversion
      */
     public function setAttribute($key, $value)
     {
-        if ($this->isDateAttribute($key) && $value !== null && $value !== '') {
+        if ($this->isTimezoneDateAttribute($key) && $value !== null && $value !== '') {
 
             /** @var Model $user */
             $user = Auth::user();
@@ -72,7 +72,7 @@ trait DatesTimezoneConversion
      */
     private function isDateObject($key, $value)
     {
-        return $this->isDateAttribute($key) &&
+        return $this->isTimezoneDateAttribute($key) &&
             is_object($value) &&
             $value instanceof Carbon;
     }
@@ -110,7 +110,7 @@ trait DatesTimezoneConversion
      * @param string $key
      * @return bool
      */
-    private function isDateAttribute($key)
+    private function isTimezoneDateAttribute($key)
     {
         if (in_array($key, $this->getDates(), true)) {
             return true;
